@@ -1,0 +1,35 @@
+#include <GL/freeglut.h>
+#include <GL/glut.h>
+
+float angel = 0;
+
+void renderPic()
+{
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    angel += 0.00001;
+    //glRotatef(angel, 0, 0, 1);
+    glTranslatef(angel, 0.0, 0.0);
+    glColor3f(1.0, 1.0, 1.0);
+    glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+    glBegin(GL_POLYGON);
+        glVertex2f(-0.5, -0.5);
+        glVertex2f(-0.5, 0.5);
+        glVertex2f(0.5, 0.5);
+        glVertex2f(0.5, -0.5);
+    glEnd();
+    glFlush();
+    glutPostRedisplay();
+}
+
+int main(int argc, char *argv[])
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE);
+    glutInitWindowSize(500, 500);
+    glutInitWindowPosition(100, 100);
+    glutCreateWindow("OpenGL");
+    glutDisplayFunc(renderPic);
+    glutMainLoop();
+    return 1;
+}
