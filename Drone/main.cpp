@@ -2,11 +2,11 @@
 #include "GL/freeglut.h"
 
 GLfloat angel = 0;
-bool putar = true;
+GLfloat angel2 = 0;
 
 void initGL()
 {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClearDepth(1.0f);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
@@ -31,43 +31,37 @@ void reshape(GLsizei width, GLsizei height)
     gluPerspective(45.0f, aspect, 0.1f, 100.0f);
 }
 
-void Persegi()
+void bodyPersegi()
 {
-    glLoadIdentity();
-    glTranslatef(0, 0, -30);
-    glColor3f(0, 0, 1);
     glBegin(GL_QUADS);
-        glVertex3f(-3, 3, 0);
-        glVertex3f(3, 3, 0);
-        glVertex3f(3, -3, 0);
-        glVertex3f(-3, -3, 0);
+        glVertex3f(-2, 0, 2);
+        glVertex3f(2, 0, 2);
+        glVertex3f(2, 0, -2);
+        glVertex3f(-2, 0, -2);
     glEnd();
 }
 
-void SegitigaKanan()
+void Sayap()
 {
-    glLoadIdentity();
-    glTranslatef(2, 0, -20);
-    glRotatef(angel, 0, 0, 1);
-    glColor3f(0, 0, 1);
     glBegin(GL_TRIANGLES);
         glVertex3f(0, 0, 0);
-        glVertex3f(4, 0, 0);
-        glVertex3f(4, 2, 0);
+        glVertex3f(1, 0, 0.5);
+        glVertex3f(1, 0, -0.5);
+        glVertex3f(0, 0, 0);
+        glVertex3f(-1, 0, 0.5);
+        glVertex3f(-1, 0, -0.5);
     glEnd();
 }
 
-void SegitigaKiri()
+void Sayap()
 {
-    glLoadIdentity();
-    glTranslatef(-2, 0, -20);
-    glRotatef(180, 0, 1, 0);
-    glRotatef(angel, 0, 0, 1);
-    glColor3f(0, 0, 1);
     glBegin(GL_TRIANGLES);
         glVertex3f(0, 0, 0);
-        glVertex3f(4, 0, 0);
-        glVertex3f(4, 2, 0);
+        glVertex3f(1, 0, 0.5);
+        glVertex3f(1, 0, -0.5);
+        glVertex3f(0, 0, 0);
+        glVertex3f(-1, 0, 0.5);
+        glVertex3f(-1, 0, -0.5);
     glEnd();
 }
 
@@ -75,21 +69,31 @@ void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
-
-    Persegi();
-    SegitigaKanan();
-    SegitigaKiri();
-    if(putar == true){
-        angel+=5;
-    } else{
-        angel-=5;
+    glLoadIdentity();
+    glTranslatef(0, -2, -10);
+    glRotatef(angel2, 0, 1, 0);
+    glRotatef(5, 1, 0, 0);
+    glColor3d(1,1,1);
+    bodyPersegi();
+    for(int i = 1; i <= 4; i++){
+        glPushMatrix();
     }
 
-    if(angel == 45){
-        putar = false;
-    }else if(angel == -45){
-        putar = true;
+    for(int x = -2; x < 4; x+=4)
+    {
+        for(int z = -2; z < 4; z+=4)
+        {
+            glPopMatrix();
+            glTranslatef(x, 0.2, z);
+            glRotatef(angel, 0, 1, 0);
+            glColor3d(1,0,0);
+            Sayap();
+        }
     }
+
+
+    angel += 10;
+    angel2 -= 0.5;
     glutSwapBuffers();
 }
 
